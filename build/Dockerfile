@@ -44,8 +44,8 @@ RUN chmod u+x /root/start.sh
 
 
 # Make Radsecproxy's ports available
-#EXPOSE 1812
-#EXPOSE 1813
+EXPOSE 1812
+EXPOSE 1813
 EXPOSE 1812/udp
 EXPOSE 1813/udp
 
