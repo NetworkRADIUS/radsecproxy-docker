@@ -7,8 +7,8 @@ ENV RADSECFILENAME radsecproxy-1.8.1.tar.gz
 ENV OPENSSL https://www.openssl.org/source/
 ENV OPENSSLFILENAME openssl-1.1.1c.tar.gz
 
-ENV RADIUS_HOST 10.2.0.111
-ENV RADIUS_HOSTNAME radius
+#ENV RADIUS_HOST 10.2.0.111
+#ENV RADIUS_HOSTNAME radius
 
 # Change working dir
 WORKDIR /root
@@ -39,8 +39,6 @@ COPY start.sh /root/start.sh
 
 # Make start.sh executeable
 RUN chmod u+x /root/start.sh
-
-# Copy from 'build' stage
 
 
 # Make Radsecproxy's ports available
