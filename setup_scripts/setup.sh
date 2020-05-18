@@ -5,7 +5,8 @@ sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
-    software-properties-common curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add - 
+    software-properties-common 
+curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add - 
     
 sudo add-apt-repository \
     "deb https://apt.dockerproject.org/repo/ \
