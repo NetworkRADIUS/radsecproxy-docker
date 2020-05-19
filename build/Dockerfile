@@ -10,8 +10,11 @@ ENV OPENSSLFILENAME openssl-1.1.1c.tar.gz
 #ENV RADIUS_HOST 10.2.0.111
 #ENV RADIUS_HOSTNAME radius
 
+#Create the Working dir
+RUN mkdir /radsecproxy
+
 # Change working dir
-WORKDIR /root
+WORKDIR /radsecproxy
 
 # Update apk
 RUN apt-get update -y
@@ -35,10 +38,10 @@ RUN ./configure
 RUN make && make install
 
 # Copy start.sh
-COPY start.sh /root/start.sh
+COPY start.sh /radsecproxy/start.sh
 
 # Make start.sh executeable
-RUN chmod u+x /root/start.sh
+RUN chmod u+x /radsecproxy/start.sh
 
 
 # Make Radsecproxy's ports available
@@ -47,4 +50,6 @@ EXPOSE 1813
 EXPOSE 1812/udp
 EXPOSE 1813/udp
 
-CMD [ "/root/start.sh" ]
+WORKDIR /root
+
+CMD [ "/radsecproxy/start.sh" ]
