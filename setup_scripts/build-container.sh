@@ -1,8 +1,10 @@
 echo "Creating the Container"
+sudo docker volume create radsecproxy-vol
 
 #create the container
 sudo docker create \
-    -p $AUTH_PORT:1812/udp -p $ACCOUNTING_PORT:1813/udp \
+    -p $AUTH_PORT:1812/udp -p $ACCOUNTING_PORT:1813/udp 
+    -v radsecproxy-vol:/var/log \
     --name $RADSECPROXY_SERVER_NAME \
     --restart always \
     cloudteamrahi48303/radsecproxy:latest
