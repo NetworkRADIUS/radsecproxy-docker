@@ -24,7 +24,7 @@ echo "..erased git downloads ( $RADSECPROXY_DIR )"
 
 
 #Purge the installed packages as part of setup
-sudo apt-get purge git unzip -y
-echo "..purged all installed packages( git and unzip )"
+sudo apt-get purge git unzip tree -y
+echo "..purged all installed packages( git, tree and unzip )"
 
 echo "Cleaning done"
