@@ -24,6 +24,15 @@ EMPTY_ERROR_MESSAGE='is unset or set to empty string.Please set the variable to 
 PORT_ERROR_MESSAGE='is unset or set to empty. Setting the port to default'
 NOT_VALID_PORT_ERROR_MESSAGE=' is not a valid port'
 
+
+docker_state=$(sudo docker info >/dev/null 2>&1)
+if [[ $? -ne 0 ]]; 
+then
+    echo "Docker does not seem to be running, run it first and retry"   
+    exit 1
+fi
+
+
 echo "Please press Enter to accept the default value or type in the override value and press Enter"
 
 
@@ -31,7 +40,7 @@ echo "Please press Enter to accept the default value or type in the override val
 #**********************************************************************************
 #               Validate Running Containers
 #**********************************************************************************
-containers_running=$(docker ps --format {{.Names}})
+containers_running=$(sudo docker ps --format {{.Names}})
 if [ ! -z "$containers_running" ];
 then
     #echo "Please press enter to delete the running containers $containers_running (yes/no)"
