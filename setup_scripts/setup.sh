@@ -22,4 +22,19 @@ sudo usermod -aG docker $(whoami)
 #You would need to loog out and log back in so that your group membership is re-evaluated or type the following command:
 
 echo "Docker Installed"
-docker --version
+if  ! sudo docker --version;
+then
+    echo "Failed to install Docker"
+    exit 1
+fi
+
+
+if  ! sudo docker info;
+then
+    echo "Docker Daemon is not Running"
+    echo "Starting Docker Daemon"
+    sudo systemctl start docker
+    echo "Installation Completed"
+else
+    echo "Installation Completed"
+fi
