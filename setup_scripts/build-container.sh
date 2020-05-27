@@ -184,7 +184,6 @@ while true
     do
         read -p "CA_CERT_FILE file path [default=$DEFAULT_CA_CERT_FILE] :" CA_CERT_FILE
         : ${CA_CERT_FILE:=$DEFAULT_CA_CERT_FILE}
-        echo $CA_CERT_FILE
         if [ ! -f "$CA_CERT_FILE" ]; 
         then
             echo "Error: $CA_CERT_FILE does not exist. Please enter valid file path"
