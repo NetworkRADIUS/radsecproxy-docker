@@ -1,7 +1,10 @@
+#!/bin/bash
+
 #Default RadsecProxy Configuration
 DEFAULT_RADSEC_KEY_FILE=$HOME/certs/key.pem
-DEFAULT_RADSEC_CRT_FILE=$HOME/certs/crt.pem
+DEFAULT_RADSEC_CRT_FILE=$HOME/certs/cert.pem
 DEFAULT_CA_CERT_FILE=$HOME/certs/cacert.pem
+DEFAULT_CA_CERT_PATH=$HOME/certs/cacerts
 DEFAULT_RADSEC_CONFIG_FILE=$HOME/radsecproxy/config/radsecproxy.conf
 
 DEFAULT_SECRET=radsec
@@ -25,22 +28,13 @@ PORT_ERROR_MESSAGE='is unset or set to empty. Setting the port to default'
 NOT_VALID_PORT_ERROR_MESSAGE=' is not a valid port'
 
 
-docker_state=$(sudo docker info >/dev/null 2>&1)
-if [[ $? -ne 0 ]]; 
-then
-    echo "Docker does not seem to be running, run it first and retry"   
-    exit 1
-fi
-
-
-echo "Please press Enter to accept the default value or type in the override value and press Enter"
-
-
 
 #**********************************************************************************
 #               Validate Running Containers
 #**********************************************************************************
-containers_running=$(sudo docker ps --format {{.Names}})
+
+
+containers_running=$(docker ps --format {{.Names}})
 if [ ! -z "$containers_running" ];
 then
     #echo "Please press enter to delete the running containers $containers_running (yes/no)"
@@ -56,6 +50,8 @@ then
     fi
 fi
 
+
+echo "Please press Enter to accept the default value or type in the override value and press Enter"
 #**********************************************************************************
 #               Radsecproxy Config Prompt for User
 #**********************************************************************************
@@ -188,14 +184,30 @@ while true
 
 
 
-#CA_CERT_FILE file path
+# #CA_CERT_FILE file path
+# while true
+#     do
+#         read -p "CA_CERT_FILE file path [default=$DEFAULT_CA_CERT_FILE] :" CA_CERT_FILE
+#         : ${CA_CERT_FILE:=$DEFAULT_CA_CERT_FILE}
+#         echo $CA_CERT_FILE
+#         if [ ! -f "$CA_CERT_FILE" ]; 
+#         then
+#             echo "Error: $CA_CERT_FILE does not exist. Please enter valid file path"
+#         else
+#             break
+#         fi
+#     done
+
+
+#CA_CERT_FILE directory path path
 while true
     do
-        read -p "CA_CERT_FILE file path [default=$DEFAULT_CA_CERT_FILE] :" CA_CERT_FILE
-        : ${CA_CERT_FILE:=$DEFAULT_CA_CERT_FILE}
-        if [ ! -f "$CA_CERT_FILE" ]; 
+        read -p "CA_CERT_PATH directory path [default=$DEFAULT_CA_CERT_PATH] :" CA_CERT_PATH
+        : ${CA_CERT_PATH:=$DEFAULT_CA_CERT_PATH}
+        echo $CA_CERT_PATH
+        if [ ! -d "$CA_CERT_PATH" ]; 
         then
-            echo "Error: $CA_CERT_FILE does not exist. Please enter valid file path"
+            echo "Error: $CA_CERT_PATH does not exist. Please enter valid directory path"
         else
             break
         fi
@@ -343,14 +355,26 @@ echo "...coping key,certificates and config files to the Container"
 # #Copy the key ,Certificates  and the radsecproxy config file
 
 
-List=( $RADSEC_KEY_FILE $RADSEC_CRT_FILE $CA_CERT_FILE $RADSEC_CONFIG_FILE )
+# List=( $RADSEC_KEY_FILE $RADSEC_CRT_FILE $CA_CERT_FILE $RADSEC_CONFIG_FILE )
+
+# LOCATION_MAPPING=( 
+#     /etc/ssl/certs/key.pem
+#     /etc/ssl/certs/crt.pem 
+#     /etc/ssl/certs/cacert.pem
+#     /etc/radsecproxy.conf
+# )
+
+
+
+List=( $RADSEC_KEY_FILE $RADSEC_CRT_FILE $CA_CERT_PATH $RADSEC_CONFIG_FILE )
 
 LOCATION_MAPPING=( 
     /etc/ssl/certs/key.pem
-    /etc/ssl/certs/crt.pem 
-    /etc/ssl/certs/cacert.pem
+    /etc/ssl/certs/cert.pem 
+    /etc/ssl/certs/cacerts
     /etc/radsecproxy.conf
 )
+
 
 for index in ${!List[*]}; 
 do 
@@ -388,4 +412,3 @@ sudo docker logs $RADSECPROXY_SERVER_NAME
 
 
 echo "Done"
-
