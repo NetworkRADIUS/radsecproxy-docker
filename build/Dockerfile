@@ -26,6 +26,11 @@ RUN wget ${RADSECURL}${RADSECFILENAME} \
  && make && make install
 
 
+# Install packages from which we will extract diagnostic tools
+RUN apk update \
+ && apk add --no-cache wpa_supplicant freeradius freeradius-utils
+
+
 # --- --- ---
 
 
@@ -40,10 +45,17 @@ RUN apk update \
 RUN apk update \
  && apk add --no-cache openssl ca-certificates nettle
 
-# Copy from 'build' stage
+# Install dependencies for debugging tools
+RUN apk update \
+ && apk add --no-cache talloc pcsc-lite-libs dbus-libs freeradius-lib tcpdump stunnel
+
+# Copy radsecproxy from 'build' stage
 COPY --from=build /root/output/ /
 
 
+COPY --from=build /sbin/eapol_test /usr/local/bin/
+COPY --from=build /usr/bin/radclient /usr/local/bin/
+COPY --from=build /usr/bin/radsniff /usr/local/bin/
 
 
 WORKDIR /root
