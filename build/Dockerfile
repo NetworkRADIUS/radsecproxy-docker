@@ -3,8 +3,8 @@ FROM alpine:latest as build
 
 
 #Download URLs for the radsecproxy and openssl
-ENV RADSECURL https://github.com/radsecproxy/radsecproxy/releases/download/1.8.1/
-ENV RADSECFILENAME radsecproxy-1.8.1.tar.gz
+ARG RADSECURL=https://github.com/radsecproxy/radsecproxy/releases/download/1.8.1/
+ARG RADSECFILENAME=radsecproxy-1.8.1.tar.gz
 
 
 
