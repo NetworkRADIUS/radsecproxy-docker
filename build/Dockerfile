@@ -37,20 +37,20 @@ FROM alpine:latest
 # Install openssl, ca-certificates
 RUN apk update
 RUN apk add --no-cache openssl ca-certificates nettle
+# Install tini init system
+RUN apk update \
+ && apk add --no-cache tini
 
 
 # Copy from 'build' stage
 COPY --from=build /root/output/ /
 
 
-# Copy start.sh
-COPY start.sh /radsecproxy/start.sh
-# Make start.sh executeable
-RUN chmod u+x /radsecproxy/start.sh
 
 
 WORKDIR /root
 
+ENTRYPOINT ["/sbin/tini", "--"]
 
+CMD [ "/sbin/radsecproxy","-f","-c","/etc/radsecproxy.conf","-i","/var/run/radsecproxy.pid" ]
 
-CMD [ "/radsecproxy/start.sh" ]
