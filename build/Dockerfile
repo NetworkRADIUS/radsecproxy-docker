@@ -19,11 +19,12 @@ RUN apk update \
  && apk add --no-cache make g++ openssl-dev nettle-dev musl-dev
 
 
-# Download Radsecproxy source files
-RUN wget ${RADSECURL}${RADSECFILENAME}
-RUN tar xf ${RADSECFILENAME} --strip-components=1
-RUN ./configure --prefix=/root/output --sysconfdir=/etc --with-ssl=/root/output/
-RUN make && make install
+# Download and build radsecproxy
+RUN wget ${RADSECURL}${RADSECFILENAME} \
+ && tar xf ${RADSECFILENAME} --strip-components=1 \
+ && ./configure --prefix=/root/output --sysconfdir=/etc --with-ssl=/root/output/ \
+ && make && make install
+
 
 # --- --- ---
 
