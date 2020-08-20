@@ -14,12 +14,9 @@ RUN mkdir /radsecproxy
 # Change working dir
 WORKDIR /radsecproxy
 
-# Update apk
-RUN apk update
-
-
 # Install buildtools
-RUN apk add --no-cache make g++ openssl-dev nettle-dev musl-dev
+RUN apk update \
+ && apk add --no-cache make g++ openssl-dev nettle-dev musl-dev
 
 
 # Download Radsecproxy source files
@@ -34,13 +31,13 @@ RUN make && make install
 # Create Radsecproxy container
 FROM alpine:latest
 
-# Install openssl, ca-certificates
-RUN apk update
-RUN apk add --no-cache openssl ca-certificates nettle
 # Install tini init system
 RUN apk update \
  && apk add --no-cache tini
 
+# Install dependencies for radsecproxy
+RUN apk update \
+ && apk add --no-cache openssl ca-certificates nettle
 
 # Copy from 'build' stage
 COPY --from=build /root/output/ /
