@@ -336,6 +336,9 @@ remove_container(){
 
 echo "...creating the Container"
 
+# Remove the container name from any old stopped instances
+docker rm $RADSECPROXY_SERVER_NAME >/dev/null 2>/dev/null
+
 # #create the container
 if  ! sudo docker create \
         -p $AUTH_PORT:1812/udp -p $ACCOUNTING_PORT:1813/udp \
