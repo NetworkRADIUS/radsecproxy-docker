@@ -347,11 +347,12 @@ echo "...creating the Container"
 # Remove the container name from any old stopped instances
 docker rm $RADSECPROXY_SERVER_NAME >/dev/null 2>/dev/null
 
-# #create the container
+# #create the container and allow it to consume up to 50GB of disk for logs
 if  ! sudo docker create \
         -p $AUTH_PORT:1812/udp -p $ACCOUNTING_PORT:1813/udp \
         --name $RADSECPROXY_SERVER_NAME \
         --restart always \
+        --log-opt max-size=500m --log-opt max-file=100 \
         $IMAGE_NAME;
 then
     echo "Failed to create container"
