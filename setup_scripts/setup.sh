@@ -19,9 +19,6 @@ sudo apt-get -y install docker.io
 # add current user to docker group so there is no need to use sudo when running docker
 sudo usermod -aG docker $(whoami)
 
-
-#You would need to loog out and log back in so that your group membership is re-evaluated or type the following command:
-
 echo "Docker Installed"
 if  ! sudo docker --version;
 then
