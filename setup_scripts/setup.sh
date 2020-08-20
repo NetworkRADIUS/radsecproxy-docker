@@ -8,6 +8,10 @@ sudo apt-get install -y \
     software-properties-common 
 
 
+# Install some helpers for pretty-printing
+sudo apt-get -y install tree jq
+
+
 # Install Docker from the official repo
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
@@ -17,7 +21,6 @@ sudo add-apt-repository \
    stable"
 
 sudo apt-get update
-sudo apt-get -y install tree
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 # add current user to docker group so there is no need to use sudo when running docker
 sudo usermod -aG docker $(whoami)
