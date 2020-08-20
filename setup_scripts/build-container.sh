@@ -247,7 +247,8 @@ while true
 #               Update Radsecproxy Config
 #**********************************************************************************
 
-#confirm the RADSEC_CONFIG_FILE with user and also validate if the file exists
+# If the supplied template file is under git version control then restore it
+git ls-files --error-unmatch $RADSEC_CONFIG_FILE && git checkout $RADSEC_CONFIG_FILE
 
 for index in ${!RADSECPROXY_CONFIG[*]}
     do
