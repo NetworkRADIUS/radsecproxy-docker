@@ -311,12 +311,20 @@ read -p "Docker Container Image name [default=$DEFAULT_IMAGE_NAME] :" IMAGE_NAME
 # #               Validate if the Docker images Exists
 # #**********************************************************************************
 
-
-# #create the container
-if  ! sudo docker pull $IMAGE_NAME;
+#Remote image names contain slash characters, otherwise the image is local
+if [[ "$IMAGE_NAME" = *"/"* ]]
 then
-    echo "Failed to pull the Docker image"
-    exit 1
+    if  ! sudo docker pull $IMAGE_NAME;
+    then
+        echo "Failed to pull the Docker image"
+        exit 1
+    fi
+else
+    if  ! sudo docker image inspect $IMAGE_NAME >/dev/null 2>/dev/null;
+    then
+        echo "The Docker image was not found locally"
+        exit 1
+    fi
 fi
 
 
