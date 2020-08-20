@@ -38,7 +38,10 @@ then
     echo "Docker Daemon is not Running"
     echo "Starting Docker Daemon"
     sudo systemctl start docker
-    echo "Installation Completed"
-else
-    echo "Installation Completed"
 fi
+
+
+# Docker doesn't currently restart unhealthy containers, so we need to do this
+sudo cp `dirname $0`/CRON.docker-restart-unhealthy-containers /etc/cron.d/docker-restart-unhealthy-containers
+
+echo "Installation Completed"

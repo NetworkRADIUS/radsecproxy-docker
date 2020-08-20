@@ -57,6 +57,7 @@ COPY --from=build /sbin/eapol_test /usr/local/bin/
 COPY --from=build /usr/bin/radclient /usr/local/bin/
 COPY --from=build /usr/bin/radsniff /usr/local/bin/
 
+COPY healthcheck.sh /
 
 WORKDIR /root
 
@@ -64,3 +65,4 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD [ "/sbin/radsecproxy","-f","-c","/etc/radsecproxy.conf","-i","/var/run/radsecproxy.pid" ]
 
+HEALTHCHECK --interval=60s --timeout=15s --retries=3 --start-period=5s CMD /healthcheck.sh
