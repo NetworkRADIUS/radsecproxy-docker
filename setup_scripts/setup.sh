@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+sudo apt-get update
 sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -8,8 +9,8 @@ sudo apt-get install -y \
     software-properties-common 
 
 
-# Install some helpers for pretty-printing
-sudo apt-get -y install tree jq
+# Install some helper utilities
+sudo apt-get -y install tree jq unzip
 
 
 # Install Docker from the official repo
