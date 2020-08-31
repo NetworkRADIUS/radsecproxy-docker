@@ -552,7 +552,7 @@ for index in ${!List[*]};
 do
     echo -n "Copying: ${List[$index]}... "
     if ! tar --owner=0 --group=0 -c -f - -C $(dirname ${List[$index]}) $(basename ${List[$index]}) | \
-        docker cp - $RADSECPROXY_CONTAINER_NAME:${LOCATION_MAPPING[$index]};
+        sudo docker cp - $RADSECPROXY_CONTAINER_NAME:${LOCATION_MAPPING[$index]};
     then
         echo "Failed to copy file ${List[$index]}"
         cleanup
