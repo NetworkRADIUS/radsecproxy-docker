@@ -517,7 +517,7 @@ echo
 echo -n "Creating the container... "
 
 if ! sudo docker create \
-        -p $AUTH_PORT:1812/udp -p $ACCOUNTING_PORT:1813/udp \
+        -p $RADIUS_LOCAL_AUTH_PORT:1812/udp -p $RADIUS_LOCAL_ACCT_PORT:1813/udp \
         --name "$RADSECPROXY_CONTAINER_NAME" \
         --restart always \
         --log-opt max-size=500m --log-opt max-file=100 \
