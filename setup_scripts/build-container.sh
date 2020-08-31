@@ -241,6 +241,8 @@ if ! [ -f "$DEFAULT_RADSEC_CRT_FILE" ];     then echo "ZIP file does not contain
 if ! [ -f "$DEFAULT_RADSEC_KEY_FILE" ];     then echo "ZIP file does not contain $ZIP_KEY_FILENAME file" 2>&1; exit; fi
 if ! [ -d "$DEFAULT_RADSEC_CA_CERT_PATH" ]; then echo "ZIP file does not contain $ZIP_CA_CERT_DIRNAME directory" 2>&1; exit; fi
 
+chmod 660 $DEFAULT_RADSEC_KEY_FILE
+
 echo "successfully unzipped to: $TMP_DIR"
 echo
 
@@ -535,16 +537,17 @@ List=(
 )
 
 LOCATION_MAPPING=(
-    /etc/ssl/certs/key.pem
-    /etc/ssl/certs/cert.pem
-    /etc/ssl/certs/cacerts
-    /etc/radsecproxy.conf
+    /etc/ssl/certs/
+    /etc/ssl/certs/
+    /etc/ssl/certs/
+    /etc/
 )
 
 for index in ${!List[*]};
 do
-    echo -n "Copying file: ${List[$index]}... "
-    if ! sudo docker cp ${List[$index]} $RADSECPROXY_CONTAINER_NAME:${LOCATION_MAPPING[$index]};
+    echo -n "Copying: ${List[$index]}... "
+    if ! tar --owner=0 --group=0 -c -f - -C $(dirname ${List[$index]}) $(basename ${List[$index]}) | \
+        docker cp - $RADSECPROXY_CONTAINER_NAME:${LOCATION_MAPPING[$index]};
     then
         echo "Failed to copy file ${List[$index]}"
         cleanup
