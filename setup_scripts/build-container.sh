@@ -129,7 +129,10 @@ if ! pgrep -u root dockerd &>/dev/null; then
         echo Running setup
         echo -------------
         echo
-        $(dirname $0)/setup.sh
+        if ! $(dirname $0)/setup.sh; then
+            echo Setup script failed. Stopping.
+            exit 1
+        fi
         echo
         echo Resuming the container build
         echo ----------------------------
